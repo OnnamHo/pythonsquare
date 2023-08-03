@@ -43,13 +43,25 @@ def reachbottom():
     if square_pos[1]+square_size > size[1]:
         square_pos[1] = size[1]-square_size
 
+def reachtop():
+    if square_pos[1] <= 0:
+        square_pos[1] = 0
+
 def swifttoleft():
     if square_pos[0]+square_size >= size[0]:
         square_pos[0] = 0
 
+def endgame():
+    if square_pos[1] + square_size >= size[1]:
+        return True
+
 
 # Main game loop
 while True:
+    if endgame():
+    #   break 
+        print("it reached bottom") 
+
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,8 +71,7 @@ while True:
             fallspeed = 0
             if event.key == pygame.K_UP:
                 if canmoveup():
-                    #if (square_pos[0], square_pos[1]) in occupied_squares == True:
-                        square_pos[1] -= 10
+                    square_pos[1] -= 30
                 print(square_pos[0], square_pos[1])
             elif event.key == pygame.K_DOWN:
                 if canmovedown():
@@ -76,7 +87,7 @@ while True:
                 print(square_pos[0], square_pos[1])
             elif event.key == pygame.K_SPACE:
                 if canmoveup():
-                    square_pos[1] -= 30
+                    square_pos[1] = 0
         
     #continuity
     if canmovedown():
@@ -88,6 +99,7 @@ while True:
     #logic check area
     fallspeed = fallspeed + 0.0981
     swifttoleft()    
+    reachtop()
     reachbottom()
 
 
@@ -96,7 +108,7 @@ while True:
     # Update the screen
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, (255, 0, 0), (square_pos[0], square_pos[1], square_size, square_size))
-    pygame.draw.rect(screen, (0, 255, 0), (0, 0, 20, 20))
+    #pygame.draw.rect(screen, (0, 255, 0), (0, 0, 20, 20))
 
     # Flip the display
     pygame.display.flip()
