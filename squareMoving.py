@@ -10,7 +10,10 @@ pygame.display.set_caption("Movable Square")
 
 # Set up the square
 square_size = 40
-square_pos = [size[0] // 2 - square_size // 2, size[1] // 2 - square_size // 2]
+#square_pos = [size[0] // 2 - square_size // 2, size[1] // 2 - square_size // 2]
+square_pos = [0,0]
+square2_pos = [50, 80]
+square3_pos = [100, 300]
 
 
 occupied_squares = set()
@@ -22,6 +25,9 @@ clock = pygame.time.Clock()
 
 #set up fall speed
 fallspeed = 1
+
+#list of square 
+squarelist = []
 
 def canmoveleft():
     if square_pos[0]-10 >= 0:
@@ -55,20 +61,63 @@ def endgame():
     if square_pos[1] + square_size >= size[1]:
         return True
 
+def collide():
+    #left edge collision
+    #if (square_pos[1] >= square2_pos[1] and square_pos[1] < square2_pos[1]+square_size and square_pos[0] + square_size == square2_pos[0] or square_pos[1]+square_size > square2_pos[1] and square_pos[1]+square_size <= square2_pos[1]+square_size and square_pos[0] + square_size == square2_pos[0]):
+        #return True
+
+    #right edge collision
+    #if (square_pos[1] >= square2_pos[1] and square_pos[1] < square2_pos[1]+square_size and square_pos[0] == square2_pos[0] + square_size or square_pos[1]+square_size > square2_pos[1] and square_pos[1]+square_size <= square2_pos[1]+square_size and square_pos[0]  == square2_pos[0] + square_size):
+     #   return True
+    
+    #bottom edge collision
+    #if (square_pos[0] >= square2_pos[0] and square_pos[0] < square2_pos[0]+square_size and square_pos[1] == square2_pos[1] + square_size or square_pos[0]+square_size > square2_pos[0] and square_pos[0]+square_size <= square2_pos[0]+square_size and square_pos[1]  == square2_pos[1] + square_size):
+     #   return True
+
+    #top edge collision
+    #if (square_pos[0] >= square2_pos[0] and square_pos[0] < square2_pos[0]+square_size and square_pos[1] + square_size == square2_pos[1] or square_pos[0]+square_size > square2_pos[0] and square_pos[0]+square_size <= square2_pos[0]+square_size and square_pos[1] + square_size == square2_pos[1]):
+     #   return True
+
+    for allsquare in squarelist:
+        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0] or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0]):
+            return True
+    
+        #right edge collision
+        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] == allsquare[0] + square_size or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0]  == allsquare[0] + square_size):
+            return True
+
+        #bottom edge collision
+        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] == allsquare[1] + square_size or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1]  == allsquare[1] + square_size):
+            return True
+
+        #top edge collision
+        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1] or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1]):
+            return True
+
 
 # Main game loop
 while True:
-    if endgame():
+    
+    #if endgame():
     #   break 
-        print("it reached bottom") 
+        #print("it reached bottom") 
 
     # Handle events
+    #if (square_pos[0] < square2_pos[0] + square_size and square_pos[0] + square_size > square2_pos[0] and square_pos[1] < square2_pos[1] + square_size and square_pos[1] + square_size > square2_pos[1]):
+        #fallspeed = 0
+
+    if collide():
+        print("boom")
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
         elif event.type == pygame.KEYDOWN:
             fallspeed = 0
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                quit()
             if event.key == pygame.K_UP:
                 if canmoveup():
                     square_pos[1] -= 30
@@ -90,10 +139,10 @@ while True:
                     square_pos[1] = 0
         
     #continuity
-    if canmovedown():
-        square_pos[1]+=fallspeed
-    if canmoveright():
-        square_pos[0]+=1
+    #if canmovedown():
+        #square_pos[1]+=fallspeed
+    #if canmoveright():
+        #square_pos[0]+=1
     
 
     #logic check area
@@ -108,7 +157,11 @@ while True:
     # Update the screen
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, (255, 0, 0), (square_pos[0], square_pos[1], square_size, square_size))
-    #pygame.draw.rect(screen, (0, 255, 0), (0, 0, 20, 20))
+    pygame.draw.rect(screen, (0, 255, 0), (square2_pos[0], square2_pos[1], square_size, square_size))
+    pygame.draw.rect(screen, (0, 0, 255), (square3_pos[0], square3_pos[1], square_size, square_size))
+    squarelist.append(square2_pos)
+    squarelist.append(square3_pos)
+    #print(squarelist[0][0])
 
     # Flip the display
     pygame.display.flip()
