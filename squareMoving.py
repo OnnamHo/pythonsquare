@@ -29,20 +29,44 @@ fallspeed = 1
 #list of square 
 squarelist = []
 
+def leftedgecoll():
+    for allsquare in squarelist:
+        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0] or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0]):
+            return True
+    return False
+
+def rightedgecoll():
+    for allsquare in squarelist:
+        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] == allsquare[0] + square_size or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0]  == allsquare[0] + square_size):
+            return True
+    return False
+
+def topedgecoll():
+    for allsquare in squarelist:
+        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1] or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1]):
+            return True
+    return False 
+
+def botedgecoll():
+    for allsquare in squarelist:
+        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] == allsquare[1] + square_size or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1]  == allsquare[1] + square_size):
+            return True       
+    return False 
+
 def canmoveleft():
-    if square_pos[0]-10 >= 0:
+    if (square_pos[0]-10 >= 0 and rightedgecoll()==False):
         return True
 
 def canmoveright():
-    if square_pos[0]+square_size < size[0]:
+    if (square_pos[0]+square_size < size[0] and leftedgecoll()==False):
         return True
 
 def canmoveup():
-    if square_pos[1]-10 >= 0:
+    if (square_pos[1]-10 >= 0 and botedgecoll() == False):
         return True
 
 def canmovedown():
-    if square_pos[1]+square_size <= size[1]:
+    if (square_pos[1]+square_size <= size[1] and topedgecoll() == False):
         return True
 
 def reachbottom():
@@ -61,38 +85,7 @@ def endgame():
     if square_pos[1] + square_size >= size[1]:
         return True
 
-def collide():
-    #left edge collision
-    #if (square_pos[1] >= square2_pos[1] and square_pos[1] < square2_pos[1]+square_size and square_pos[0] + square_size == square2_pos[0] or square_pos[1]+square_size > square2_pos[1] and square_pos[1]+square_size <= square2_pos[1]+square_size and square_pos[0] + square_size == square2_pos[0]):
-        #return True
 
-    #right edge collision
-    #if (square_pos[1] >= square2_pos[1] and square_pos[1] < square2_pos[1]+square_size and square_pos[0] == square2_pos[0] + square_size or square_pos[1]+square_size > square2_pos[1] and square_pos[1]+square_size <= square2_pos[1]+square_size and square_pos[0]  == square2_pos[0] + square_size):
-     #   return True
-    
-    #bottom edge collision
-    #if (square_pos[0] >= square2_pos[0] and square_pos[0] < square2_pos[0]+square_size and square_pos[1] == square2_pos[1] + square_size or square_pos[0]+square_size > square2_pos[0] and square_pos[0]+square_size <= square2_pos[0]+square_size and square_pos[1]  == square2_pos[1] + square_size):
-     #   return True
-
-    #top edge collision
-    #if (square_pos[0] >= square2_pos[0] and square_pos[0] < square2_pos[0]+square_size and square_pos[1] + square_size == square2_pos[1] or square_pos[0]+square_size > square2_pos[0] and square_pos[0]+square_size <= square2_pos[0]+square_size and square_pos[1] + square_size == square2_pos[1]):
-     #   return True
-
-    for allsquare in squarelist:
-        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0] or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0] + square_size == allsquare[0]):
-            return True
-    
-        #right edge collision
-        if (square_pos[1] >= allsquare[1] and square_pos[1] < allsquare[1]+square_size and square_pos[0] == allsquare[0] + square_size or square_pos[1]+square_size > allsquare[1] and square_pos[1]+square_size <= allsquare[1]+square_size and square_pos[0]  == allsquare[0] + square_size):
-            return True
-
-        #bottom edge collision
-        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] == allsquare[1] + square_size or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1]  == allsquare[1] + square_size):
-            return True
-
-        #top edge collision
-        if (square_pos[0] >= allsquare[0] and square_pos[0] < allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1] or square_pos[0]+square_size > allsquare[0] and square_pos[0]+square_size <= allsquare[0]+square_size and square_pos[1] + square_size == allsquare[1]):
-            return True
 
 
 # Main game loop
@@ -106,7 +99,7 @@ while True:
     #if (square_pos[0] < square2_pos[0] + square_size and square_pos[0] + square_size > square2_pos[0] and square_pos[1] < square2_pos[1] + square_size and square_pos[1] + square_size > square2_pos[1]):
         #fallspeed = 0
 
-    if collide():
+    if (leftedgecoll() or rightedgecoll() or topedgecoll() or botedgecoll()):
         print("boom")
 
     for event in pygame.event.get():
@@ -127,7 +120,7 @@ while True:
                     square_pos[1] += 10
                 print(square_pos[0], square_pos[1])
             elif event.key == pygame.K_LEFT:
-                if canmoveleft():
+                if (canmoveleft()):
                     square_pos[0] -= 10
                 print(square_pos[0], square_pos[1])
             elif event.key == pygame.K_RIGHT:
@@ -139,10 +132,10 @@ while True:
                     square_pos[1] = 0
         
     #continuity
-    #if canmovedown():
-        #square_pos[1]+=fallspeed
-    #if canmoveright():
-        #square_pos[0]+=1
+    if canmovedown():
+        square_pos[1]+=fallspeed
+    if canmoveright():
+        square_pos[0]+=1
     
 
     #logic check area
