@@ -17,11 +17,6 @@ square2 = [50, 80, 50, 200]
 square3 = [100, 300, 50, 120]
 square4 = [270, 450, 200, 30]
 
-
-occupied_squares = set()
-# When a square is occupied, add its position to the set
-occupied_squares.add((10, 10))
-
 # Set up the clock
 clock = pygame.time.Clock()
 
